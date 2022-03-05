@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <title>Aeon - Search</title>
+    <#INCLUDE filename="include_head.html">
+    <script type="text/javascript" src="js/search.js"></script>
+</head>
+
+<body>
+
+    <#INCLUDE filename="include_header.html">
+    <#INCLUDE filename="include_menu.html">
+    <div class="container">
+        <main id="content" aria-label="Content">
+            <h2>Search</h2>
+
+            <div id="search">
+                <form action="aeon.dll" name="Search" method="post">
+                    <input type="hidden" name="AeonForm" value="Search">
+                    <input id="SearchCriteria" value="<#PARAM name='SearchCriteria'>" name="SearchCriteria" type="text" title="Search criteria">
+                    <input class="btn btn-primary btn-sm" type="submit" name="SubmitButton" value="Search" title="Search" data-button-nodisable>
+
+                    <!--Switch control for search filtering-->
+                    <!--
+                    <div class="custom-control custom-switch" id="customSearchType">
+                        <input type="checkbox" name="SearchType" class="custom-control-input" id="SearchType" value="Active" data-persisted-value="<#PARAM name='SearchType'>">
+                        <label class="custom-control-label" for="SearchType">Search <u>only</u> active requests</label>
+                    </div>
+                    -->
+
+                    <!--Radio control for search filtering-->
+                    <br>
+                    
+                    <div id="searchType">
+                        <input checked name="SearchType" type="radio" id="SearchTypeActive" value="Active" data-persisted-value="<#PARAM name='SearchType'>">
+                        <label for="SearchTypeActive"><span>Search <u>only</u> active requests</span></label>
+
+                        <input class="ml-3" name="SearchType" type="radio" id="SearchTypeAll" value="All" data-persisted-value="<#PARAM name='SearchType'>">
+                        <label for="SearchTypeAll">Search all requests</label>
+                    </div>
+                </form>
+            </div>
+
+            <div id="searchResults">
+                <#DATAREPEATER name="ViewSearchResults" TemplateFile="templates/DataRow_DefaultRequest.html" orderby="TransactionNumber DESC">
+    
+                <div id="no-results-message" style="display: none;">
+                    There are no search results for
+                    <span id="searchTerm"><strong><#PARAM name="SearchCriteria"></strong></span>
+                </div>
+            </div>
+        </main>
+        <#INCLUDE filename="include_footer.html">
+    </div>
+</body>
+</html>
