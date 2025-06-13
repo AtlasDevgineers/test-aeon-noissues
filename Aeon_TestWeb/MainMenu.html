@@ -17,6 +17,7 @@
     <div class="container">
         <main id="content" aria-label="Content">
             <#TAGCLOUD>
+                <div class="alert alert-info">This is extra code that should not trigger any code review warnings</div>
             <h2>Outstanding Requests</h2>
             <#DATAREPEATER name="ViewOutstandingRequests" TemplateFile="templates/DataRow_DefaultRequest.html" noDataAction="You have no outstanding requests" orderby="TransactionNumber DESC">
         </main>
