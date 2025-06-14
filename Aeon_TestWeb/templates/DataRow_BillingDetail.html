@@ -3,7 +3,7 @@
 		<div class="col-lg-12">
 			<div class="list-group-item d-flex justify-content-between">
 				<span>
-					<a class="text-info btn btn-light ml-1" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseBillingDetail<#DATAROW field='TransactionNumber'>" href="#collapseBillingDetail<#DATAROW field='ID'>"><span aria-hidden="true" class="fa fa-chevron-down text-info mr-1"></span></a>
+					<button type="button" class="btn btn-light ml-1" data-toggle="collapse" aria-expanded="false" aria-controls="collapseBillingDetail<#DATAROW field='ID'>" data-target="#collapseBillingDetail<#DATAROW field='ID'>" aria-label="Toggle billing details for <#DATAROW field='BillingContext'>"><span aria-hidden="true" class="fa fa-chevron-down mr-1"></span></button>
 					<#DATAROW field="BillingContext"><strong class="ml-1"><#DATAROW field="BillingType"></strong>
 				</span>
 				<span class="text-right font-weight-bold"><#DATAROW field="Total" Display="Currency"></span>

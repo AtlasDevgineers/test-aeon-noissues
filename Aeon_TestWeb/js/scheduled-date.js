@@ -1,186 +1,126 @@
-/*
-* Schedule Date date picker
-*/
+window.addEventListener('load', function () {
+    if (!this.document.getElementById("ScheduledDate"))
+    {
+        return;
+    }
+    // Retrieve closures from AJAX endpoint
+    fetch('aeon.dll/ajax?query=ScheduledDate', {
+        method: 'GET',
+        cache: 'no-cache'
+    })
+    .then((response) => response.json())
+    .then(data => {
 
-(function () {
-    'use strict';
+        // Days of week
+        disabledDays = [
+            data["DefaultSchedule"].includes("Monday") ? 0 : 1,
+            data["DefaultSchedule"].includes("Tuesday") ? 0 : 1,
+            data["DefaultSchedule"].includes("Wednesday") ? 0 : 1,
+            data["DefaultSchedule"].includes("Thursday") ? 0 : 1,
+            data["DefaultSchedule"].includes("Friday") ? 0 : 1,
+            data["DefaultSchedule"].includes("Saturday") ? 0 : 1,
+            data["DefaultSchedule"].includes("Sunday") ? 0 : 1
+        ]
 
-    var defaultSchedule, minDate, maxDate, yearlyHolidays, floatingHolidays;
-
-    function checkHoliday(array, value) {
-        for (var i = 0; i < array.length; i++) {
-            if (array[i][0] == value) {
-                return array[i][1];
-            }
+        // Available date range
+        let minDays = data["MinimumDays"];
+        if (minDays < 0) {
+            minDays = 0;
         }
 
-        return null;
-    }
-
-    function isHoliday(dateToCheck) {
-        var yearlyDate, floatingDate, result;
-
-        yearlyDate = $.datepicker.formatDate('mmdd', dateToCheck);
-        floatingDate = $.datepicker.formatDate('yymmdd', dateToCheck);
-
-        result = checkHoliday(floatingHolidays, floatingDate);
-
-        if (!result) {
-            result = checkHoliday(yearlyHolidays, yearlyDate);
+        let maxDays = data["MaximumDays"];
+        if (maxDays <= minDays || maxDays <= 0) {
+            maxDays = null;
         }
 
-        return result;
-    }
+        let today = new Date();
+        let rangeLow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + minDays);
+        let rangeHigh = new Date(today.getFullYear(), today.getMonth(), today.getDate() + maxDays);
 
-    function isOpen(dateToCheck) {
-        var holiday = isHoliday(dateToCheck);
+        // Closures
+        disabledDates = {}
 
-        if (holiday) {
-            return [true, 'ui-datepicker-unselectable', holiday];
-        } else {
-            if (defaultSchedule[dateToCheck.getDay()]) {
-                return [true, null, null];
+        data["ScheduledClosures"].forEach(closure => {
+            let date = new Date(closure.ClosureDate);
+            let formattedDateString = date.toISOString().slice(0,10).replace(/-/g,"");
+            if (closure.Recurring == "true") {
+                formattedDateString = "****" + formattedDateString.slice(4);
             }
-            else {
-                return [true, 'ui-datepicker-unselectable', "Closed"];
-            }
-        }
-    }
-
-    function changeDisableDateColor(){
-        var unselectableDate = $('.ui-datepicker-unselectable a');
-
-        unselectableDate.css({
-            opacity: .35,
-            cursor: 'context-menu'
-        });
-    }
-
-	function validateDate(date) {
-		try {
-			if (date == "") {
-				return true;
-			}
-
-			var parsedDate = $.datepicker.parseDate("mm/dd/yy", date);
-
-			if (!(isOpen(parsedDate)[0])) {
-				alert("We are closed on " + date + ". Please select another date");
-				return false;
-			}
-
-			return true;
-		}
-		catch (err) {
-			alert("Invalid date. Please enter the date using the mm/dd/yyyy format.");
-			return false;
-		}
-    }
-
-	
-    $(document).ready(function () {
-        /*
-        * Pull in scheduled closures from JSON
-        */
-        $.ajax({
-            method: 'GET',
-            url: 'aeon.dll/ajax?query=ScheduledDate',
-            cache: false
+            disabledDates[formattedDateString] = 1;
         })
-        .done(function(data) {
-            /*
-            * Defines the minimum date that will be enabled
-            * See http://docs.jquery.com/UI/Datepicker#option-minDate for more information on the available values
-            */
-            minDate = data["MinimumDays"];
-            if (minDate < 0) {
-                minDate = 0;
-            }
 
-            /*
-            * Defines the maximum date that will be enabled
-            * See http://docs.jquery.com/UI/Datepicker#option-maxDate for more information on the available values
-            */
-            maxDate = data["MaximumDays"];
-            if (maxDate <= minDate || maxDate <= 0) {
-                maxDate = null;
-            }
-
-            /*
-            * Defines which days of the week will be enabled/disabled
-            */
-            var defaultScheduleArray = data["DefaultSchedule"];
-            defaultScheduleArray = $.map(defaultScheduleArray, function (weekday) {
-                return weekday.toLowerCase();
-            });
-
-            defaultSchedule = [
-                $.inArray("sunday", defaultScheduleArray) > -1,
-                $.inArray("monday", defaultScheduleArray) > -1,
-                $.inArray("tuesday", defaultScheduleArray) > -1,
-                $.inArray("wednesday", defaultScheduleArray) > -1,
-                $.inArray("thursday", defaultScheduleArray) > -1,
-                $.inArray("friday", defaultScheduleArray) > -1,
-                $.inArray("saturday", defaultScheduleArray) > -1
-            ];
-
-            var allDates = data["ScheduledClosures"];
-            yearlyHolidays = [];
-            floatingHolidays = [];
-            var dateString;
-            $.each(allDates, function(index, value) {
-                if (value["Recurring"] == "true") {
-                    /*
-                    * Yearly holidays
-                    *
-                    * An array of 2 elements where the first is the date of the holiday and the second is the name of the
-                    * holiday which will be displayed in the tooltip for the date
-                    *
-                    * Format is 2-digit month followed by 2-digit day (i.e. mmdd)
-                    */
-                    dateString = value["ClosureDate"].substring(5,7) + value["ClosureDate"].substring(8,10);
-                    yearlyHolidays.push([dateString, value["Description"]]);
-                } else {
-                    /*
-                    * Floating holidays or other days that should be disabled
-                    *
-                    * An array of 2 elements where the first is the date of the holiday and the second is the name of the
-                    * holiday which will be displayed in the tooltip for the date
-                    *
-                    * Format of first element is 4-digit year followed by 2-digit month followed by 2-digit day (i.e. yyyymmdd)
-                    */
-                    dateString = value["ClosureDate"].substring(0,4) + value["ClosureDate"].substring(5,7) + value["ClosureDate"].substring(8,10);
-                    floatingHolidays.push([dateString, value["Description"]]);
-                }
-            });
-
-            var scheduledDate = $('#ScheduledDate');
-
-            scheduledDate.change(function() {
-                if (!(validateDate(scheduledDate.val()))) {
-                    scheduledDate.val("");
-                }
-            });
-
-            if (scheduledDate != null) {
-                scheduledDate.datepicker({
-                    minDate: minDate,
-                    maxDate: maxDate,
-                    beforeShowDay: function (date) {
-                        var day = isOpen(date);
-                        return day;
-                    },
-                    onChangeMonthYear: function(){
-                        setTimeout(function(){
-                            changeDisableDateColor();
-                        });
-                    }
-                });
-
-                $('#ScheduledDate ~ img').click(function() {
-                    changeDisableDateColor();
-                });
-            }
+        datePickerController.setGlobalOptions({
+            "nodrag":1
         });
+
+        // Create a mutation observer that watches for changes to the disabled attribute in the ScheduledDate input,
+        // and creates/destroys datepickers when the inputs are enabled/disabled
+        var observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+              if (mutation.attributeName === "disabled") {
+                var dpInputId = mutation.target.id;
+                if (dpInputId !== "ScheduledDate"){
+                    return;
+                }
+                if (!mutation.target[mutation.attributeName]) {
+                    datePickerController.createDatePicker({
+                        formElements:{"ScheduledDate":"%m/%d/%Y"},
+                        noTodayButton: "true",
+                        positioned: "datePickerButton",
+                        finalOpacity: 100,
+                        disabledDays: disabledDays,
+                        rangeLow: rangeLow
+                    });
+                    datePickerController.setDisabledDates("ScheduledDate", disabledDates);
+                    if (maxDays) { 
+                        datePickerController.setRangeHigh("ScheduledDate", rangeHigh);
+                    }
+                }
+                else {
+                    datePickerController.destroyDatePicker("ScheduledDate");
+                }
+              }
+            });
+        });
+        
+        // If the ScheduledDate input is not disabled, create a date picker.
+        // Observe the input for changes to its disabled state
+        observer.observe($("#ScheduledDate")[0], {
+            attributes: true
+        });
+    
+        if (!$("#ScheduledDate")[0].disabled) {
+            datePickerController.createDatePicker({
+                formElements:{"ScheduledDate":"%m/%d/%Y"},
+                noTodayButton: "true",
+                positioned: "datePickerButton",
+                finalOpacity: 100,
+                disabledDays: disabledDays,
+                rangeLow: rangeLow
+            });
+            datePickerController.setDisabledDates("ScheduledDate", disabledDates);
+            if (maxDays) { 
+                datePickerController.setRangeHigh("ScheduledDate", rangeHigh);
+            }
+        }
+        
+        this.document.getElementById("datePickerButton").addEventListener("click", function(){datePickerController.show('ScheduledDate', true);});
+        this.document.getElementById("ScheduledDate").addEventListener("change", function(){ ValidateDate(); })
+
+        function ValidateDate() {
+            var scheduledDateField = document.getElementById("ScheduledDate");
+            var scheduledDate = new Date(scheduledDateField.value);
+            if (isNaN(scheduledDate)){
+                alert("Invalid date. Please enter the date using the mm/dd/yyyy format.");
+                scheduledDateField.value = "";
+                setTimeout(function(){scheduledDateField.focus();}, 0);
+            } else if (!(datePickerController.dateValidForSelection("ScheduledDate", scheduledDate))) {
+                alert("We are closed on " + scheduledDate.toDateString() + ". Please select another date.");
+                scheduledDateField.value = "";
+                setTimeout(function(){scheduledDateField.focus();}, 0);
+            }
+        }
+
     });
-}());
+});
+

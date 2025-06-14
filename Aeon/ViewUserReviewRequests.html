@@ -5,7 +5,7 @@
 	<title>Aeon - Saved Requests</title>
 	<#INCLUDE filename="include_head.html">
 	<#INCLUDE filename="include_head_request.html">
-	<script type="text/javascript" src="js/KeepInReview.js"></script>
+	<script type="text/javascript" src="js/KeepInReview.min.js"></script>
 </head>
 
 <body>
@@ -17,14 +17,15 @@
 			<form action="aeon.dll" method="post" id="ViewUserReviewRequests" name="ViewUserReviewRequests">
 
 				<input type="hidden" name="AeonForm" value="ViewUserReviewRequests">
+				
 				<div class="row">
 					<div class="col-lg-7">
 						<h2 class="header-special">Saved Requests</h2>
 					</div>
 			
 					<div class="col-lg-5 text-right">
-						<button class="selectOptions btn btn-link checkAll" data-form="ViewUserReviewRequests" aria-label="Select all of the displayed requests." role="button" >Select All</button>
-						<button class="selectOptions btn btn-link checkNone" data-form="ViewUserReviewRequests" aria-label="Unselect all of the displayed requests." role="button" >Select None</button>
+						<button type="button" class="selectOptions btn btn-link checkAll" data-form="ViewUserReviewRequests" aria-label="Select all of the displayed requests." role="button" >Select All</button>
+						<button type="button" class="selectOptions btn btn-link checkNone" data-form="ViewUserReviewRequests" aria-label="Select none of the displayed requests." role="button" >Select None</button>
 					</div>
 				</div>
 
@@ -32,33 +33,30 @@
 					<#DATAREPEATER Name="RequestsInReview" TemplateFile="Templates\DataRow_ReviewRequest.html" NoDataAction="<div class='no-data-message'>You do not currently have any requests in review</div>">
 				</span>
 					
-				<div id ="scheduled-date-div" class="visit-date form-group col-sm-4">
+				<!-- We're not using include_scheduled_date here because this instance has an additional id and class-->
+				<div id="scheduled-date-div" class="visit-date form-group col-sm-4">
 						<label for="ScheduledDate">
 							<span class="<#ERROR name='ERRORScheduledDate'>">
 								Date of Visit
 							</span>
 						</label>
 						<div class="input-group">
-							<input class="form-control" id="ScheduledDate" name="ScheduledDate" type="text" aria-describedby="button-datePicker-scheduledDate" value="<#PARAM name='ScheduledDate'>">
-							<div class="input-group-append">
-							<button class="btn btn-outline-secondary dateTrigger" type="button" role="button" id="button-datePicker-scheduledDate" data-triggerDatePicker="#ScheduledDate" aria-label="Calendar">
-								<span class="fas fa-calendar ui-datepicker-trigger"></span>
-							</button>
-							</div>
+							<input class="form-control" id="ScheduledDate" name="ScheduledDate" type="text" aria-describedby="scheduledDateNotes" value="<#PARAM name='ScheduledDate'>">
+							<div id="datePickerButton" class="input-group-append btn btn-outline-secondary"></div>
 						</div>
-
-						<div class="small-notes">
-							Select the date you plan to visit.
+						<div class="small-notes" id="scheduledDateNotes">
+                            Select the date you plan to visit. <span class="sr-only"> A button is available to open a calendar.</span>
 						</div>
-				</div>
+					</div>
 
 				<div id="request-link-div" class="form-group visit-date col-md-5 <#PARAM name='RequestLinksVisible' enabled='RequestForEnabled' disabled='d-none'>">
 					<label for="RequestLink">
 						<span class="<#ERROR name='ERRORRequestLink'>">
 							Request for
 						</span>
+						<span class="req">(required)</span>
 					</label>
-					<select class="form-control custom-select mr-sm-2" id="RequestLink" name="RequestLink" size="1" >
+					<select class="form-control custom-select mr-sm-2" id="RequestLink" name="RequestLink" size="1" required>
 						<#OPTION name="RequestLinks" hideUsernames="true">
 					</select>
 				</div>

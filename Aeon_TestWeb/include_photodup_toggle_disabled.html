@@ -1,0 +1,20 @@
+<h3 class="section-header">Schedule Retrieval</h3>
+<section name="schedule-section">
+    <input type="hidden" name="RequestType" value="Loan">
+    
+    <div class="form-group col-md-5 <#PARAM name='RequestLinksVisible' enabled='RequestForEnabled' disabled='d-none'>">
+        <label for="RequestLink">
+            <span class="<#ERROR name='ERRORRequestLink'>">
+                Request for
+            </span>
+            <span class="req">(required)</span>
+        </label>
+        <select class="custom-select mr-sm-2" id="RequestLink" name="RequestLink" size="1" required>
+            <#OPTION name="RequestLinks" hideUsernames="true">
+        </select>
+    </div>
+
+    <#INCLUDE filename="include_scheduled_date.html">
+</section>
+
+<#INCLUDE filename="include_request_buttons.html">

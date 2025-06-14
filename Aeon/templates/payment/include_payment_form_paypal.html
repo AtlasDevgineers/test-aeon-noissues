@@ -3,12 +3,12 @@
     <input type="hidden" name="currency_code" value="USD">
                                         
     <!--The notify URL should point to your nonshib folder if using remote auth e.g. http://aeon.institution.edu/aeon/nonshib/aeon.dll?action=11&type=106 -->
-    <input type="hidden" name="notify_url" value="<#CUSTOMIZATION name=WebURL>aeon.dll?action=11&type=106">
+    <input type="hidden" name="notify_url" value="<#CUSTOMIZATION name=WebURL>aeon.dll?action=11&amp;type=106">
 
     <!--System defined values -->
     <input type="hidden" name="business" value="<#CUSTOMIZATION name=PaymentProviderMerchantId>">
     <input type="hidden" name="item_name_1" value="<#CUSTOMIZATION name=CreditCardTransactionsDescription>">
-    <input type="hidden" name="return" value="<#DLL absoluteUrl=true queryFields=false>?action=11&type=105">
+    <input type="hidden" name="return" value="<#DLL absoluteUrl=true queryFields=false>?action=11&amp;type=105">
     <input type="hidden" name="cmd" value="_cart">
     <input type="hidden" name="upload" value="1">
     <input type="hidden" id="invoice" name="invoice" value="">

@@ -1,5 +1,14 @@
 $(document).ready(function () {
 
+	// Search for anchor link buttons that are disabled by css. For those links, remove the href and apply relevant role and aria attributes
+	// This prevents keyboard access and also provides information to screen readers about the disabled state of the link
+	var disabledLinks = document.querySelectorAll("a.btn.disabled");
+	disabledLinks.forEach(link => {
+		link.removeAttribute("href");
+		link.setAttribute("role", "link");
+		link.setAttribute("aria-disabled", "true");
+	});
+
 	//Hide field-values if there is no value inside (when the field does not also have a class of showEmptyValue)
 	$('.field-value:empty').closest('.field:not(.showEmptyValue)').hide();
 
@@ -23,8 +32,6 @@ $(document).ready(function () {
 	$('.statusNormal').addClass('alert alert-secondary d-block').attr('role','alert');
 	$('.statusError').addClass('alert alert-danger d-block').attr('role','alert');
 	$('.statusInformation').addClass('alert alert-info d-block').attr('role','alert');
-
-	$('.validationError').addClass('text-danger');	
 	
 	//Convert server times to the user's local time
 	//This can be time intensive for pages with many date/times to convert - comment out to disable conversion functionality
@@ -81,20 +88,6 @@ $(document).ready(function () {
 	//Legacy support if using "data-persistedValue"
 	$("select[data-persistedValue]").each(function(idx, el) { SelectPersistedValue(el, $(el).attr('data-persistedValue')) });
 
-	// Add tooltips for all data-toggle attributes	
-	$('[data-toggle="tooltip"]').tooltip({
-		//The title for the tooltip defaults to the title attribute.
-		//If title is not provided, we provide an alternate option here to 
-		//look for a data-titleElement attribute to find title content		
-		title: function() {
-		  var helpAttribute = $(this).attr('data-titleElement');
-		  if ((helpAttribute != null) && ($(helpAttribute).length > 0))
-		  {
-			return $(helpAttribute).text().trim();
-		  }
-		}
-	});
-
 	$('button.checkAll').click(function (event) {
 		event.preventDefault();
 		//event.stopPropagation();
@@ -132,10 +125,12 @@ function SelectPersistedValue(el, persistedValue) {
 	//If a persisted value is set and is a SELECT element
 	if ((persistedValue) &&
 		((formType == "select-one") || (formType == "select-multiple"))) {
+		$(el).get(0).querySelectorAll("option[value='" + persistedValue.replace("'","\\'") + "']").forEach(option => {
+			option.selected = true;});
 		$(el).find("option[value='" + persistedValue.replace("'","\\'") + "']").attr("selected", true);		
 	}
 	else if ((formType == "radio") || (formType == "checkbox")) {
-		var isChecked = $(this).val() == persistedValue;
+		var isChecked = el.value == persistedValue;
 			
 		//Only set checked if true or if not a radio button since radio buttons will already have a default value
 		if (isChecked || (formType == "checkbox")) {
@@ -194,7 +189,11 @@ function HandleBoolCheckboxes() {
 		
 		if (!hiddenInputName) return;	//continue
 		if (!$("input[name='" + hiddenInputName + "']").length){
-			checkboxInput.before("<input type='hidden' name='" + hiddenInputName + "' value=0>");
+			let newInput = document.createElement("input");
+			newInput.setAttribute("type", "hidden");
+			newInput.setAttribute("name", hiddenInputName);
+			newInput.setAttribute("value", `${checkboxInput.prop('checked') ? 1 : 0}`);
+			checkboxInput.before(newInput);
 		}
 		var hiddenInput = $("input[name='" + hiddenInputName + "']");
 
@@ -213,10 +212,10 @@ function HandleOtherCheckboxes() {
     //Check for all elements with the checkbox-with-other class
     $('.checkbox-with-other').each(function(i, e) {
         var hiddenInputId = $(e).attr('data-hidden-field');
-        var hiddenInput = $("#" + hiddenInputId);
+        var hiddenInput = document.getElementById(hiddenInputId);
         var delimiter = $(e).attr('data-delimiter');
         var otherFieldId = $(e).attr('data-other-field');
-        var otherField = $("#" + otherFieldId);
+        var otherField = document.getElementById(otherFieldId);
 		var values = $(hiddenInput).val().split(delimiter);
 		
 		//Look for all checkboxes that are descendents
@@ -291,7 +290,6 @@ function HandleOtherDropdowns() {
 			if (this.value == $(this).attr("data-other-value")) {
 				input.closest(".form-group").show();
 				$(input).val(null);
-				input.focus();
 			}
 			// Otherwise, assign the same value to the (hidden) text input and hide it.
 			else {

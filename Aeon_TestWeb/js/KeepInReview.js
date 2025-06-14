@@ -40,10 +40,8 @@ var aeonKeepInReviewModule = (function () {
                     $.each(data.messages, function (index, message) {
                         if (statusRoot) {
                             // Create new status span to display
-                            breakElement = $('<br>');
-                            statusElement = $('<span></span>').attr('name', 'statusMessage').addClass('statusError').text(message);
+                            statusElement = $('<span></span>').attr('name', 'statusMessage').attr("role", "alert").addClass('statusError alert alert-danger d-block').text(message);
 
-                            statusRoot.append(breakElement);
                             statusRoot.append(statusElement);
                         }
                     });
@@ -55,7 +53,11 @@ var aeonKeepInReviewModule = (function () {
                         labelElement.removeClass('valid');
                         labelElement.addClass('validationError');
                     });
-
+            
+                    // Jump page to status element
+                    $([document.documentElement, document.body]).animate({
+                        scrollTop: statusRoot.offset().top
+                    }, 0);
                     return false;
                 } else {
                     var submitButton = document.createElement("input");
@@ -75,7 +77,7 @@ var aeonKeepInReviewModule = (function () {
 
     function addMessage(statusRoot, statusClass, messageText) {
         if (statusRoot) {
-            var statusElement = $("<span></span>").attr("name", "statusMessage").addClass(statusClass).text(messageText);
+            var statusElement = $("<span></span>").attr("name", "statusMessage").attr("role", "alert").addClass(statusClass).text(messageText);
             statusRoot.append(statusElement);
             statusRoot.append("<br>");
         }
@@ -158,7 +160,6 @@ var aeonKeepInReviewModule = (function () {
         }
     };
 })();
-
 
 $(document).ready(function () {
     aeonKeepInReviewModule.onDocumentReady();

@@ -8,7 +8,7 @@
     <title>Aeon - EAD Requests</title>
     <#INCLUDE filename="include_head.html">
     <#INCLUDE filename="include_head_request.html">
-    <script type="text/javascript" src="js/EADRequest.js"></script>
+    <script type="text/javascript" src="js/EADRequest.min.js"></script>
     <script>
         $(document).ready(function () {
             //Initialize the EAD Submission form
@@ -37,7 +37,6 @@
                     -->
             <form action="" name="EADRequest_Original">
                 <input type="hidden" ID="AeonForm" name="FormDataField" value="EADRequest">
-                <input type="hidden" ID="Username" name="FormDataField" value="<#PARAM name='Username'>">
                 <input type="hidden" ID="DocumentType" name="FormDataField" value="Manuscript">
 
                 <h2>Finding Aid Requests</h2>
@@ -62,8 +61,8 @@
                                 My Notes
                             </span>
                         </label>
-                        <textarea class="form-control" name="FormDataField" id="Notes" rows="2" cols="40"><#PARAM name="Notes"></textarea>
-                        <div class="small-notes">
+                        <textarea class="form-control" name="FormDataField" id="Notes" rows="2" cols="40" aria-describedby="notesNotes"><#PARAM name="Notes"></textarea>
+                        <div class="small-notes" id="notesNotes">
                             Please include any additional information that might help us locate the specific items requested, as well as other pertinent information.
                         </div>
                     </div>
@@ -74,16 +73,16 @@
                                 Special Requests/Questions?
                             </span>
                         </label>
-                        <textarea class="form-control" name="FormDataField" id="SpecialRequest" rows="2" cols="40"><#PARAM name="SpecialRequest"></textarea>
-                        <div class="small-notes">Please enter any special requests or questions for library staff.</div>
+                        <textarea class="form-control" name="FormDataField" id="SpecialRequest" rows="2" cols="40" aria-describedby="specialRequestNotes"><#PARAM name="SpecialRequest"></textarea>
+                        <div class="small-notes" id="specialRequestNotes">Please enter any special requests or questions for library staff.</div>
                     </div>
 
                     <div class="form-group col-md-8">
                         <label for="ResearcherTags">
                             Researcher Tags
                         </label>
-                        <input type="text" class="form-control" name="FormDataField" id="ResearcherTags" value="<#PARAM name='ResearcherTags'>">
-                        <div class="small-notes">Enter a comma-separated list of the tags you want associated with this request.</div>
+                        <input type="text" class="form-control" name="FormDataField" id="ResearcherTags" value="<#PARAM name='ResearcherTags'>" aria-describedby="researcherTagNotes">
+                        <div class="small-notes" id="researcherTagNotes">Enter a comma-separated list of the tags you want associated with this request.</div>
                     </div>
 
                     <div class="form-group col-md-5 <#PARAM name='RequestLinksVisible' enabled='RequestForEnabled' disabled='d-none'>">
@@ -91,31 +90,14 @@
                             <span class="<#ERROR name='ERRORRequestLink'>">
                                 Request for
                             </span>
+                            <span class="req">(required)</span>
                         </label>
-                        <select class="custom-select mr-sm-2" id="RequestLink" name="FormDataField" size="1">
-                            <#OPTION name="RequestLinks">
+                        <select class="custom-select mr-sm-2" id="RequestLink" name="FormDataField" size="1" required>
+                            <#OPTION name="RequestLinks" hideUsernames="true">
                         </select>
                     </div>
 
-                    <div class="form-group col-sm-4">
-                        <label for="ScheduledDate">
-                            <span class="<#ERROR name='ERRORScheduledDate'>">
-                                Date of Visit
-                            </span>
-                        </label>
-                        <div class="input-group">
-                            <input class="form-control" id="ScheduledDate" name="FormDataField" type="text"  aria-describedby="button-datePicker-scheduledDate" value="<#PARAM name='ScheduledDate'>">
-                            <div class="input-group-append">
-                            <button class="btn btn-outline-secondary dateTrigger" type="button" role="button" id="button-datePicker-scheduledDate" data-triggerDatePicker="#ScheduledDate"  aria-label="Calendar">
-                                <span class="fas fa-calendar ui-datepicker-trigger"></span>
-                            </button>
-                            </div>
-                        </div>
-
-                        <div class="small-notes">
-                            Select the date you plan to visit.
-                        </div>
-                    </div>
+                    <#INCLUDE filename="include_scheduled_date_ead.html">
 
                 </section>
                 <#INCLUDE filename="include_request_buttons.html">

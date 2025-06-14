@@ -15,7 +15,6 @@
         <main id="content" aria-label="Content">
             <form action="aeon.dll" method="post" name="DefaultRequest" id="RequestForm">
                 <input type="hidden" name="AeonForm" value="DefaultRequest">
-                <input type="hidden" name="Username" value="<#PARAM name='Username'>">
                 <input type="hidden" name="TransactionLink" value="<#PARAM name='TransactionLink'>">
                 <input type="hidden" name="ReferenceNumber" value="<#PARAM name='ReferenceNumber'>">
                 <input type="hidden" name="ItemNumber" value="<#PARAM name='ItemNumber'>">
@@ -27,7 +26,7 @@
 
                 <section name="item-info">
 
-                    <div class="d-flex">
+                    <div class="d-flex flex-wrap">
                         <h3 class="section-header">Item Information</h3>
                         <div class="ml-auto">
                             <button id="SwitchToPhotoduplicationRequest" class="btn btn-primary btn-md switchButton switch-request-form float-right" type="button" name="switchButton" data-switchrequest-form="20" data-switchrequest-value="PhotoduplicationRequest">
@@ -136,9 +135,10 @@
                             <span class="<#ERROR name='ERRORRequestLink'>">
                                 Request for
                             </span>
+                            <span class="req">(required)</span>
                         </label>
-                        <select class="custom-select mr-sm-2" id="RequestLink" name="RequestLink" size="1">
-                            <#OPTION name="RequestLinks">
+                        <select class="custom-select mr-sm-2" id="RequestLink" name="RequestLink" size="1" required>
+                            <#OPTION name="RequestLinks" hideUsernames="true">
                         </select>
                     </div>
 
@@ -148,8 +148,8 @@
                                 My Notes
                             </span>
                         </label>
-                        <textarea class="form-control" name="Notes" id="Notes" rows="2" cols="40"><#PARAM name="Notes"></textarea>
-                        <div class="small-notes">Enter any notes about this request for your personal reference.</div>
+                        <textarea class="form-control" name="Notes" id="Notes" rows="2" cols="40" aria-describedby="notesNotes"><#PARAM name="Notes"></textarea>
+                        <div class="small-notes" id="notesNotes">Enter any notes about this request for your personal reference.</div>
                     </div>
 
                     <div class="form-group col-md-8">
@@ -158,31 +158,13 @@
                                 Special Requests/Questions?
                             </span>
                         </label>
-                        <textarea class="form-control" name="SpecialRequest" id="SpecialRequest" rows="2" cols="40"><#PARAM name="SpecialRequest"></textarea>
-                        <div class="small-notes">Please enter any special requests or questions for library staff.</div>
+                        <textarea class="form-control" name="SpecialRequest" id="SpecialRequest" rows="2" cols="40" aria-describedby="specialRequestNotes"><#PARAM name="SpecialRequest"></textarea>
+                        <div class="small-notes" id="specialRequestNotes">Please enter any special requests or questions for library staff.</div>
                     </div>
 
                     <#INCLUDE filename="include_ResearcherTags.html">
 
-                    <div class="form-group col-sm-4">
-                        <label for="ScheduledDate">
-                            <span class="<#ERROR name='ERRORScheduledDate'>">
-                                Date of Visit
-                            </span>
-                        </label>
-                        <div class="input-group">
-                            <input class="form-control" id="ScheduledDate" name="ScheduledDate" type="text"  aria-describedby="button-datePicker-scheduledDate" value="<#PARAM name='ScheduledDate'>">
-                            <div class="input-group-append">
-                            <button class="btn btn-outline-secondary dateTrigger" type="button" role="button" id="button-datePicker-scheduledDate" data-triggerDatePicker="#ScheduledDate"  aria-label="Calendar">
-                                <span class="fas fa-calendar ui-datepicker-trigger"></span>
-                            </button>
-                            </div>
-                        </div>
-
-                        <div class="small-notes">
-                            Select the date you plan to visit.
-                        </div>
-                    </div>
+                    <#INCLUDE filename="include_scheduled_date.html">
                 </section>
 
                 <#INCLUDE filename="include_request_buttons.html">

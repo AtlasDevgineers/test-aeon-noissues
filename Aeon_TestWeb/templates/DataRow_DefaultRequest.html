@@ -4,20 +4,20 @@
 			<div class="row">
 				<div class="col-lg-8 col-md-12">
 					<div class="card-title h4">
-						<a href="aeon.dll?&Action=10&Form=63&Value=<#DATAROW field='TransactionNumber'>"><#DATAROW field="ItemTitle"></a>
+						<a href="aeon.dll?&amp;Action=10&amp;Form=63&amp;Value=<#DATAROW field='TransactionNumber'>"><#DATAROW field="ItemTitle"></a>
 					</div>
 					<div class="card-subtitle h5 text-muted"><#DATAROW field="ItemSubtitle"></div>
 				</div>
 
 				<div class="col-lg-4 col-md-12 text-right">
 					<div class="btn-group" role="group" aria-label="Actions for Request <#DATAROW field='TransactionNumber'>">
-						<a class="btn btn-primary" role="button" href="aeon.dll?&Action=10&Form=63&Value=<#DATAROW field='TransactionNumber'>"><span class="fa fa-info-circle mr-1"></span>Details</a>
+						<a class="btn btn-primary" href="aeon.dll?&amp;Action=10&amp;Form=63&amp;Value=<#DATAROW field='TransactionNumber'>"><span class="fa fa-info-circle mr-1"></span>Details</a>
 
 						<div class="btn-group" role="group">
 							<button id="btnGroupDrop<#DATAROW field='TransactionNumber'>" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								Actions
 							</button>
-							<div class="dropdown-menu" data-noaction-message="You are not able to perform any actions for this request." aria-labelledby="btnGroupDrop<#DATAROW field='TransactionNumber'>">
+							<div class="dropdown-menu dropdown-menu-right" data-noaction-message="You are not able to perform any actions for this request." aria-labelledby="btnGroupDrop<#DATAROW field='TransactionNumber'>">
 								<a class="dropdown-item btn btn-light menuEdit <#DATAROW field='RequestActionAllowed' name='Edit' disabledValue='d-none'>" href="aeon.dll?Action=20&amp;Form=63&amp;Value=<#DATAROW field='TransactionNumber'>"><span aria-hidden="true" class="fas fa-edit text-primary mr-1"></span>  Edit</a>
 								<a class="dropdown-item btn btn-light menuClone <#DATAROW field='RequestActionAllowed' name='Cancel' disabledValue='d-none'>" href="aeon.dll?Action=21&amp;Type=10&amp;Value=<#DATAROW field='TransactionNumber'>"><span aria-hidden="true" class="fas fa-ban text-danger mr-1"></span>  Cancel Request</a>
 								<a class="dropdown-item btn btn-light menuClone <#DATAROW field='RequestActionAllowed' name='RemoveFromHold' disabledValue='d-none'>" href="aeon.dll?Action=22&amp;Type=16&amp;Value=<#DATAROW field='TransactionNumber'>"><span aria-hidden="true" class="fas fa-minus-circle mr-1"></span>  Remove from Hold</a>
@@ -43,16 +43,10 @@
 					<div class="field text-muted">Volume/Box<span class="field-value font-weight-bold ml-1"><#DATAROW field="ItemVolume"></span></div>
 				</div>
 				<div class="col-lg-5 col-md-12 text-right">
-					<span id="Tooltip_ItemStatus_<#DATAROW field='TransactionNumber'>" class="d-none" role="tooltip">
-						Moved to <#DATAROW field="TransactionStatus"> on <span class="convert-local" data-iso8601="<#DATAROW field='TransactionDate' display='ISO8601'>"><#DATAROW field="TransactionDate"></span>
-					</span>
-					<div class="mb2 text-muted" data-toggle="tooltip" data-placement="right" data-titleElement="#Tooltip_ItemStatus_<#DATAROW field='TransactionNumber'>">
+					<div class="mb2 text-muted">
 						Item Status<span class="field-value font-weight-bold ml-1"><#DATAROW field="TransactionStatus"></span>
 					</div>
-					<span id="Tooltip_OrderStatus_<#DATAROW field='TransactionNumber'>" class="d-none" role="tooltip">
-						Moved to <#DATAROW field="PhotoduplicationStatus"> on <span class="convert-local" data-iso8601="<#DATAROW field='PhotoduplicationDate' display='ISO8601'>"><#DATAROW field="PhotoduplicationDate"></span>
-					</span>
-					<div class="field mb2 text-muted" data-toggle="tooltip" data-placement="right" data-titleElement="#Tooltip_OrderStatus_<#DATAROW field='TransactionNumber'>">
+					<div class="field mb2 text-muted">
 						Order Status<span class="field-value font-weight-bold ml-1"><#DATAROW field="PhotoduplicationStatus"></span>
 					</div>
 				</div>

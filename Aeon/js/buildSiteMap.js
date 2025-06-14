@@ -44,9 +44,34 @@ $(document).ready(function () {
 });
 
 function appendMapLink(parent, link) {
-    var label = link.text.trim();
+    var label = "";
+
+    // If the link contains an image child element, iterate through all child nodes and get the text content or alt text of each (only if it is an element or text node)
+    if (link.querySelectorAll("img").length) {
+        link.childNodes.forEach(node => {
+            if (node.nodeType === 1) {
+                if (node.tagName.toLowerCase() == "img") {
+                    label += " " + (node.getAttribute("alt") ?? "");
+                }
+                else {
+                    label += " " + node.textContent;
+                }
+            }
+            else if (node.nodeType === 3) {
+                label += " " + node.textContent;
+            }
+        });
+        label = label.trim();
+    }
+    else {
+        label = link.text.trim();
+    }
+
     var href = link.attributes.href.value;
     var mapItem = document.createElement("li");
-    mapItem.innerHTML = '<a href="' + href + '">' + label + '</a>'
+    var newLink = document.createElement("a");
+    newLink.setAttribute("href", href);
+    newLink.textContent = label;
+    mapItem.appendChild(newLink);
     parent.appendChild(mapItem);
 }

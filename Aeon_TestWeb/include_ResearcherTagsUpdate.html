@@ -4,7 +4,7 @@
 <div class="row">
 	<div class="col-lg-12">
 		<div class="list-group-item d-flex justify-content-between">
-				<span>Current Tags </span>
+				<span class="transaction-label">Current Tags </span>
 				<strong>
 					<span id="currentTag"><#PARAM name="ResearcherTags"></span>
 				</strong>
@@ -32,8 +32,8 @@
 							Researcher Tags
 						</label>
 						<div class="value">
-							<input id="researcher-tags-input" name="ResearcherTags" type="text" size="50" value="<#PARAM name='ResearcherTags'>">
-							<div class="small-notes">Enter a comma-separated list of the tags you want associated with this request.</div>
+							<input type="text" class="form-control" name="ResearcherTags" id="researcher-tags-input" value="<#PARAM name='ResearcherTags'>" aria-describedby="researcherTagNotes">
+							<div class="small-notes" id="researcherTagNotes">Enter a comma-separated list of the tags you want associated with this request.</div>
 						</div>
 					</div>
 				</div>

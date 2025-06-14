@@ -4,7 +4,7 @@
 			<div class="row">
 				<div class="col-lg-8 col-md-12 text-muted">
 					<div class="card-title h4">
-						<a href="aeon.dll?&Action=10&Form=91&Value=<#DATAROW field='Id'>"><#DATAROW field="Name"></a>
+						<a href="aeon.dll?&amp;Action=10&amp;Form=91&amp;Value=<#DATAROW field='Id'>"><#DATAROW field="Name"></a>
 					</div>
 
 					<div class="field text-muted">Description
@@ -12,12 +12,8 @@
 							<#DATAROW field="Description">
 						</span>
 					</div>
-
-					<span id="Tooltip_ActivityStatus_<#DATAROW field='Id'>" class="d-none" role="tooltip">
-						<#DATAROW field="ActivityStatus"> on <span class="convert-local" data-servertime="<#DATAROW field='ActivityStatusDate'>" data-iso8601="<#DATAROW field='ActivityStatusDate' display='ISO8601'>"><#DATAROW field="ActivityStatusDate"></span>								
-					</span>
 					
-					<div class="field mb-2 text-muted" data-toggle="tooltip" data-placement="top" data-titleElement="#Tooltip_ActivityStatus_<#DATAROW field='Id'>">
+					<div class="field mb-2 text-muted">
 						Status<span class="field-value font-weight-bold ml-1"><#DATAROW field="ActivityStatus"></span>
 					</div>
 					
@@ -25,13 +21,13 @@
 					
 				<div class="col-lg-4 col-md-12 text-left">		
 					<div class="btn-group" role="group" aria-label="Actions for Request <#DATAROW field='TransactionNumber'>">
-						<a class="btn btn-primary" role="button" href="aeon.dll?&Action=10&Form=91&Value=<#DATAROW field='Id'>"><span aria-hidden="true" class="fa fa-info-circle mr-1"></span>Details</a>
+						<a class="btn btn-primary" href="aeon.dll?&amp;Action=10&amp;Form=91&amp;Value=<#DATAROW field='Id'>"><span aria-hidden="true" class="fa fa-info-circle mr-1"></span>Details</a>
 
 						<div class="btn-group" role="group">
 							<button id="btnGroupActivityDrop<#DATAROW field='Id'>" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								<span aria-hidden="true" class="fas fa-file-download mr-1"></span>Download
 							</button>
-							<div class="dropdown-menu" aria-labelledby="btnGroupActivityDrop<#DATAROW field='Id'>">
+							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupActivityDrop<#DATAROW field='Id'>">
 								<a class="dropdown-item btn btn-light menuDownloadXls" href="aeon.dll?Action=10&amp;Form=92&amp;Value=<#DATAROW field='ID'>"><span aria-hidden="true" class="far fa-file-excel mr-1"></span>XLS</a>
 								<a class="dropdown-item btn btn-light menuDownloadiCalendar" href="aeon.dll?Action=10&amp;Form=93&amp;Value=<#DATAROW field='ID'>"><span aria-hidden="true" class="far fa-calendar-plus mr-1"></span>iCalendar</a>
 							</div>

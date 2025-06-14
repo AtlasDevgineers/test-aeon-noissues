@@ -12,6 +12,7 @@
 	<#INCLUDE filename="include_menu.html">
 	<div class="container">
 		<main id="content" aria-label="Content">
+			<#TAGCLOUD>
 			<h2>Outstanding Requests</h2>
 
 			<#DATAREPEATER name="ViewOutstandingRequests" TemplateFile="templates/DataRow_DefaultRequest.html" noDataAction="You have no outstanding requests" orderby="TransactionNumber DESC">

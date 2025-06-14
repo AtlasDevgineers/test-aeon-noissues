@@ -86,7 +86,7 @@ $(document).ready(function () {
 
                     if (alertStyle == "modal") {
                         buttonElement = $("<button></button>").addClass('btn btn-link btn-alert').attr('data-toggle', 'modal').attr('type', 'button').attr('data-target', '#webAlertContent' + alert.id).html('<span aria-hidden="true" class="fas fa-info-circle"></span> &nbsp;' + alert.alertTitle);
-                        alertElement = $('<div></div>').addClass('modal fade').attr('id', 'webAlertContent' + alert.id).attr('tabindex', '-1').attr('role', 'dialog').attr('aria-labelledby', 'webAlertTitle')
+                        alertElement = $('<div></div>').addClass('modal fade').attr('id', 'webAlertContent' + alert.id).attr('tabindex', '-1').attr('role', 'dialog').attr('aria-labelledby', 'webAlertTitle' + alert.id)
                             .append($('<div></div>').addClass('modal-dialog modal-dialog-centered').attr('role', 'document')
                                 .append($('<div></div>').addClass('modal-content')
                                     .append($('<div></div>').addClass('modal-header')
@@ -94,13 +94,13 @@ $(document).ready(function () {
                                             //We add an h class to the alert title here to get the styling of an h4 without indicating heading
                                             // semantics that may be implied by reading the DOM for accessibility
                                             .addClass('modal-title h5').attr('id', 'webAlertTitle' + alert.id).html(alert.alertTitle))
-                                        .append($('<button></button>').addClass('close').attr('data-dismiss', 'modal').attr('aria-label', 'Close')
+                                        .append($('<button></button>').addClass('close').attr('data-dismiss', 'modal').attr('aria-label', 'Close').attr('type', 'button')
                                             .html($('<span aria-hidden="true">&times;</span>'))
                                         )
                                     )
                                     .append($('<div></div>').addClass('modal-body').html(alert.alertMessage))
                                     .append($('<div></div>').addClass('modal-footer').attr('id', 'alert-footer' + alert.id)
-                                        .append($('<button></button>').addClass('btn btn-secondary').attr('data-dismiss', 'modal').text('Close'))
+                                        .append($('<button></button>').addClass('btn btn-secondary').attr('data-dismiss', 'modal').attr('type', 'button').text('Close'))
                                     )
                                 )
                             )

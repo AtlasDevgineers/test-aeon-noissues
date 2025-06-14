@@ -17,7 +17,7 @@
         <div id="statusLine" class="container"><#STATUS></div>
         <div class="container">
             <main id="content" aria-label="Content">
-                <form action="aeon.dll" method="post" name="Registration">
+                <form action="aeon.dll" id="registration-form" method="post" name="Registration">
                     <input type="hidden" name="AeonForm" value="Registration">
                     <input type="hidden" name="NotificationMethod" value="Email">
                     <#FORMSTATE>
@@ -287,8 +287,8 @@
                                             <span class="req">(required)</span>
                                         </span>
                                     </label>
-                                    <input type="password" class="form-control" name="Password1" id="Password1" autocomplete="off" required>
-                                    <div class="small-notes">
+                                    <input type="password" class="form-control" name="Password1" id="Password1" autocomplete="off" aria-describedby="passwordNotes" required>
+                                    <div class="small-notes" id="passwordNotes">
                                         Passwords must be at least eight characters long and contain a lowercase letter, an uppercase letter, and a number.
                                     </div>
                                 </div>
@@ -305,7 +305,7 @@
 
                             </section>
 
-                            <button class="btn btn-primary btn-md" type="submit" name="SubmitButton" value="Submit Information">Submit Information</button>
+                            <#CAPTCHA>
                             <button class="btn btn-secondary btn-md" type="submit" name="SubmitButton" value="Cancel - Return to Logon page" formnovalidate>Cancel - Return to Logon page</button>
 
                         </div>

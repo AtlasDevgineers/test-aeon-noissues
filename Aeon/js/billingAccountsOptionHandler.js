@@ -1,9 +1,21 @@
+var RequestLinkPhoto = "#RequestLink";
+var rlPhoto = document.getElementById("RequestLinkPhoto");
+if (typeof(rlPhoto) != 'undefined' && rlPhoto != null) {
+    RequestLinkPhoto = "#RequestLinkPhoto";
+} else if (document.querySelector(RequestLinkPhoto) == null) {
+	if (document.querySelector("[data-ead-name='RequestLink']") != null) {
+		RequestLinkPhoto = "[data-ead-name='RequestLink']";
+	} else {
+		RequestLinkPhoto = "[name='RequestLink']";
+	}
+}
+
 //// Sets the options for the billing accounts SELECT element.
 function UpdateBillingAccountDropdown() {
     //Get the billing valid billing accounts for the selected RequestLink option. The _billingAccountOptions array is created as part of the BillingAccounts #OPTION and
     //links the researchers, users, and events with their corresponding billing accounts.
     var billingAccountDropdown = $("#BillingAccountId");
-    var requestLink = $("#RequestLink").val();
+    var requestLink = $(RequestLinkPhoto).val();
 
     var billingAccounts = [];
 
@@ -79,7 +91,7 @@ function UpdateBillingAccountDropdown() {
 }
 
 // Attach UpdateBillingDropdowns to the change event of the RequestLink SELECT element.
-$("#RequestLink").change(UpdateBillingAccountDropdown);
+$(RequestLinkPhoto).change(UpdateBillingAccountDropdown);
 
 // Initialize the dropdowns when the document loads.
 $(document).ready(UpdateBillingAccountDropdown());

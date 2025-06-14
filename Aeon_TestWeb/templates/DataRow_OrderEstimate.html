@@ -8,7 +8,7 @@
 
 				<div class="col-lg-7 col-md-12 text-left">
 					<div class="card-title h4">
-						<a href="aeon.dll?&Action=10&Form=63&Value=<#DATAROW field='TransactionNumber'>">
+						<a href="aeon.dll?&amp;Action=10&amp;Form=63&amp;Value=<#DATAROW field='TransactionNumber'>">
 							<#DATAROW field="ItemTitle">
 						</a>
 					</div>
@@ -38,14 +38,14 @@
 
 				<div class="col-lg-4 col-md-12 text-left">
 					<div class="btn-group" role="group" aria-label="Actions for Request <#DATAROW field='TransactionNumber'>">
-						<a class="btn btn-primary" role="button" href="aeon.dll?&Action=10&Form=63&Value=<#DATAROW field='TransactionNumber'>">
+						<a class="btn btn-primary" href="aeon.dll?&amp;Action=10&amp;Form=63&amp;Value=<#DATAROW field='TransactionNumber'>">
 							<span aria-hidden="true" class="fa fa-info-circle mr-1"></span> Details</a>
 							<button id="btnGroupDrop<#DATAROW field='TransactionNumber'>" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								Actions
 							</button>
-							<div class="dropdown-menu" data-noaction-message="You are not able to perform any actions for this request." aria-labelledby="btnGroupDrop<#DATAROW field='TransactionNumber'>">
+							<div class="dropdown-menu dropdown-menu-right" data-noaction-message="You are not able to perform any actions for this request." aria-labelledby="btnGroupDrop<#DATAROW field='TransactionNumber'>">
 								<a class="dropdown-item btn btn-light ViewFile <#DATAROW field='RequestActionAllowed' name='ViewFile' disabledValue='disabled'>" href="aeon.dll?Action=10&amp;Form=75&amp;Value=<#DATAROW field='TransactionNumber'>">
-									<span aria-hidden="true" class="fas fa-eye text-info mr-2"></span>View Request</a>
+									<span aria-hidden="true" class="fas fa-eye mr-2"></span>View Request</a>
 								<a class="dropdown-item btn btn-light Edit <#DATAROW field='RequestActionAllowed' name='Edit' disabledValue='disabled'>" href="aeon.dll?Action=20&amp;Form=63&amp;Value=<#DATAROW field='TransactionNumber'>">
 									<span aria-hidden="true" class="fas fa-edit text-primary mr-2"></span>Edit Request</a>
 								<a class="dropdown-item btn btn-light Cancel <#DATAROW field='RequestActionAllowed' name='Cancel' disabledValue='disabled'>" href="aeon.dll?Action=21&amp;Form=10&amp;Value=<#DATAROW field='TransactionNumber'>">
